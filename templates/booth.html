@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Booth Page</h2>
+<p>Welcome, {{ username }}!</p>
+<div class="booth">
+    <p>Status: </p>
+    <form action="{{ url_for('booth') }}" method="post">
+                <div>
+                    <p>Category: President</p>
+                    <input type="radio" id="male" name="pres" value="male"> <label for="male">Kanmi Gbadamosi</label><br>
+                    <input type="radio" id="female" name="pres" value="female"> <label for="female">Female</label><br>
+                    <input type="radio" id="other" name="pres" value="other"> <label for="other">Other</label>
+                </div>
+
+        <div>
+            <p>Category: Vice President</p>
+            <input type="radio" id="male" name="vp" value="male"> <label for="male">Male</label><br>
+            <input type="radio" id="female" name="vp" value="female"> <label for="female">Female</label><br>
+            <input type="radio" id="other" name="vp" value="other"> <label for="other">Other</label>
+        </div>
+        <div>
+            <p>Category: General Secretary</p>
+            <input type="radio" id="male" name="gs" value="male"> <label for="male">Male</label><br>
+            <input type="radio" id="female" name="gs" value="female"> <label for="female">Female</label><br>
+            <input type="radio" id="other" name="gs" value="other"> <label for="other">Other</label>
+        </div>
+        <div>
+            <p>Category: Treasurer</p>
+            <input type="radio" id="male" name="tr" value="male"> <label for="male">Male</label><br>
+            <input type="radio" id="female" name="tr" value="female"> <label for="female">Female</label><br>
+            <input type="radio" id="other" name="tr" value="other"> <label for="other">Other</label>
+        </div>
+        <div>
+            <p>Category: Financial Secretary</p>
+            <input type="radio" id="male" name="fs" value="male"> <label for="male">Male</label><br>
+            <input type="radio" id="female" name="fs" value="female"> <label for="female">Female</label><br>
+            <input type="radio" id="other" name="fs" value="other"> <label for="other">Other</label>
+        </div>
+    <div class="msg">{{ msg }}</div>
+    <input type="submit" value="Vote">
+    </form>
+</div>
+{% endblock %}
