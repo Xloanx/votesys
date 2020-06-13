@@ -124,16 +124,22 @@ def register():
 
 @app.route('/votesys/booth')
 def booth():
+   position=[]
+   full_name=[]
    # Check if user is loggedin
    if 'loggedin' in session:
       # User is loggedin show them to the booth
       # Fetch Contestants from DB
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cursor.execute('SELECT * FROM contest_2020_tab')
-      contenstants = cursor.fetchall()
+      cursor.execute('SELECT usertab.surname, usertab.midname, usertab.firstname, contesttab.position\
+                        FROM usertab \
+                        INNER JOIN contesttab ON usertab.userid=contesttab.userid;')
+      contenstants_details = cursor.fetchall()
+      full_name = [contenstants_details[i][0]+" "+ contenstants_details[i][1]+" "+contenstants_details[i][2] for i in range(len(contenstants_details))]
+      position = [contenstants_details[i][3] for i in range(len(contenstants_details))]
       #Search for voter on voters' table and return value to status
       status =''
-      return render_template('booth.html', username=session['name'],contestants_list=contenstants)
+      return render_template('booth.html', username=session['name'],full_name, position)
    # User is not loggedin redirect to login page
    return redirect(url_for('login'))
 
