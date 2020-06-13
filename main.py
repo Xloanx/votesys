@@ -53,7 +53,6 @@ def login():
          session['id'] = account['userid']
          session['name'] = account['firstname']
          return redirect(url_for('admin'))
-         #msg = hashed
       else:
          # Account doesn't exist or username/password incorrect
          msg = 'Incorrect username/password!'
@@ -213,11 +212,7 @@ def booth():
 def admin():
    # Check if user is loggedin
    if 'loggedin' in session:
-      # User is loggedin show them to the booth
-      # Check if account exists using MySQL
-      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cursor.execute('SELECT * FROM contest_2020_tab')
-      contenstants = cursor.fetchall()
+      # Administrator is logged in show them to the Admin Page
       return render_template('admin.html', username=session['name'])
    # User is not loggedin redirect to login page
    return redirect(url_for('login'))

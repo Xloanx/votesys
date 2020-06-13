@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Administrator Page</h2>
+<p>Welcome, {{ username }}!</p>
+<div class="card">
+    <div class="field_contest">
+        <h1>Field Contestant</h1>
+			<form action="{{ url_for('register') }}" method="post">
+				<label for="email">
+					<i >Select Email</i>
+                </label>
+                <select name="" size="">
+                    <option value=""></option>
+                </select><br/>
+                <label for="email">
+					<i >Select Position</i>
+                </label>
+				<select name="" size="">
+                    <option value=""> </option>
+                </select>
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Submit Contestant">
+			</form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="field_contest">
+        
+    </div>
+</div>
+
+<div class="card">
+    <div class="field_contest">
+        
+    </div>
+</div>
+
+<div class="card">
+    <div class="field_contest">
+        
+    </div>
+</div>
+
+{% endblock %}

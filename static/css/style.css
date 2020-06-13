@@ -71,7 +71,7 @@ body {
     margin-bottom: 20px;
     padding: 0 15px;
 }
-.login form input[type="submit"], .register form input[type="submit"], .booth form input[type="submit"] {
+.login form input[type="submit"], .register form input[type="submit"], .booth form input[type="submit"], .card form input[type="submit"] {
     width: 100%;
     padding: 15px;
     margin-top: 20px;
@@ -82,7 +82,7 @@ body {
     color: #ffffff;
     transition: background-color 0.2s;
 }
-.login form input[type="submit"]:hover, .register form input[type="submit"]:hover {
+.login form input[type="submit"]:hover, .register form input[type="submit"]:hover, .card form input[type="submit"]:hover {
     background-color: #2868c7;
     transition: background-color 0.2s;
 }
@@ -153,4 +153,14 @@ body.loggedin {
 .content > div p {
   padding: 5px;
   margin: 0 0 10px 0;
+}
+
+.card {
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 0;
+    padding: 3px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    width:22%;
+    height:25px;
 }
