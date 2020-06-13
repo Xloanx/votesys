@@ -131,15 +131,15 @@ def booth():
       # User is loggedin show them to the booth
       # Fetch Contestants from DB
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cursor.execute('SELECT usertab.surname, usertab.midname, usertab.firstname, contesttab.position\
-                        FROM usertab \
-                        INNER JOIN contesttab ON usertab.userid=contesttab.userid;')
+      cursor.execute('SELECT usertab.userid, usertab.surname, usertab.midname, usertab.firstname, contesttab.position\
+                        FROM usertab INNER JOIN contesttab ON usertab.userid=contesttab.userid;')
       contenstants_details = cursor.fetchall()
-      full_name = [contenstants_details[i][0]+" "+ contenstants_details[i][1]+" "+contenstants_details[i][2] for i in range(len(contenstants_details))]
-      position = [contenstants_details[i][3] for i in range(len(contenstants_details))]
+      userid = [contenstants_details[i][0] for i in range(len(contenstants_details))]
+      full_name = [contenstants_details[i][1]+" "+ contenstants_details[i][2]+" "+contenstants_details[i][3] for i in range(len(contenstants_details))]
+      position = [contenstants_details[i][4] for i in range(len(contenstants_details))] #returns individual positions
       #Search for voter on voters' table and return value to status
       status =''
-      return render_template('booth.html', username=session['name'],full_name, position)
+      return render_template('booth.html', userid= session['id'], username=session['name'],full_name, position)
    # User is not loggedin redirect to login page
    return redirect(url_for('login'))
 
