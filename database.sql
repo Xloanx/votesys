@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS contesttab (
 		)ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 /*Upom supply of these two Do Copy & Paste
-/*email
-/*position
+email
+position
 START TRANSACTION;
 
 INSERT INTO contest_2020_tab (userid)
@@ -67,3 +67,5 @@ SET position = 'president'
 WHERE email = 'odukayeabiodun@gmail.com';
 
 COMMIT;
+*/
+
