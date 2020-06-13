@@ -122,6 +122,53 @@ def register():
    # Show registration form with message (if any)
    return render_template('register.html', msg=msg)
 
+
+########Registration Page for admin
+@app.route('/votesys/regexed', methods=['GET', 'POST'])
+def regexed():
+   # Output message if something goes wrong...
+   msg = ''
+   # Check if "username", "password" and "email" POST requests exist (user submitted form)
+   if request.method == 'POST' and 'surname' in request.form and 'firstname' in request.form and 'midname' in request.form and 'email' in request.form and 'password' in request.form and 'phone' in request.form:
+      # Create variables for easy access
+      surname = request.form['surname']
+      firstname = request.form['firstname']
+      midname = request.form['midname']
+      phone = request.form['phone']
+      email = request.form['email']
+      password = request.form['password']
+      #hasher.update(password.encode('utf-8'))
+      #hashed = hasher.hexdigest()
+      category = 'admin'
+      
+      # Check if account exists using MySQL
+      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cursor.execute('SELECT * FROM usertab WHERE email = %s', (email,))
+      account = cursor.fetchone()
+      # If account exists show error and validation checks
+      if account:
+         msg = 'Account already exists!'
+      elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+         msg = 'Invalid email address!'
+      elif not surname or not firstname or not midname or not phone or not password or not email:
+         msg = 'Please fill out the form!'
+      else:
+         # Account doesnt exists and the form data is valid, now insert new account into accounts table
+         cursor.execute('INSERT INTO usertab (userid, surname, midname, firstname, regdate, phone, email, pass, category) VALUES (NULL, %s, %s, %s, now(), %s, %s, MD5(%s), %s)', (surname, midname, firstname, phone, email, password, category,))
+         mysql.connection.commit()
+         msg = 'You have successfully registered!'
+   elif request.method == 'POST':
+      # Form is empty... (no POST data)
+      msg = 'Please fill out the form!'
+   # Show registration form with message (if any)
+   return render_template('register.html', msg=msg)
+
+
+
+
+
+
+
 @app.route('/votesys/booth')
 def booth():
    position=[]
@@ -134,12 +181,12 @@ def booth():
       cursor.execute('SELECT usertab.userid, usertab.surname, usertab.midname, usertab.firstname, contesttab.position\
                         FROM usertab INNER JOIN contesttab ON usertab.userid=contesttab.userid;')
       contenstants_details = cursor.fetchall()
-      userid = [contenstants_details[i][0] for i in range(len(contenstants_details))]
+      cont_userid = [contenstants_details[i][0] for i in range(len(contenstants_details))]
       full_name = [contenstants_details[i][1]+" "+ contenstants_details[i][2]+" "+contenstants_details[i][3] for i in range(len(contenstants_details))]
       position = [contenstants_details[i][4] for i in range(len(contenstants_details))] #returns individual positions
       #Search for voter on voters' table and return value to status
       status =''
-      return render_template('booth.html', userid= session['id'], username=session['name'],full_name, position)
+      return render_template('booth.html', userid= session['id'], username=session['name'],cont_userid, full_name, position)
    # User is not loggedin redirect to login page
    return redirect(url_for('login'))
 
