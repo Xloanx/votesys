@@ -8,33 +8,33 @@
 <div class="booth">
     <p>Status: </p>
     <form action="{{ url_for('booth') }}" method="post">
-                <div>
-                    <p>Category: President</p>
-                    <input type="radio" id="male" name="pres" value="male"> <label for="male">Kanmi Gbadamosi</label><br>
-                    <input type="radio" id="female" name="pres" value="female"> <label for="female">Female</label><br>
-                    <input type="radio" id="other" name="pres" value="other"> <label for="other">Other</label>
-                </div>
+        <div>
+            <p>Category: {{position_group[0]}}</p>
+            <input type="radio" id="male" name={{position_group[0]}} value="male"> <label for="male">{{full_name[0]}}</label><br>
+            <input type="radio" id="female" name="pres" value="female"> <label for="female">{{full_name[1]}}</label><br>
+            <input type="radio" id="other" name="pres" value="other"> <label for="other">{{full_name[2]}}</label>
+        </div>
 
         <div>
-            <p>Category: Vice President</p>
+            <p>Category: {{position_group[1]}}</p>
             <input type="radio" id="male" name="vp" value="male"> <label for="male">Male</label><br>
             <input type="radio" id="female" name="vp" value="female"> <label for="female">Female</label><br>
             <input type="radio" id="other" name="vp" value="other"> <label for="other">Other</label>
         </div>
         <div>
-            <p>Category: General Secretary</p>
+            <p>Category: {{position_group[2]}}</p>
             <input type="radio" id="male" name="gs" value="male"> <label for="male">Male</label><br>
             <input type="radio" id="female" name="gs" value="female"> <label for="female">Female</label><br>
             <input type="radio" id="other" name="gs" value="other"> <label for="other">Other</label>
         </div>
         <div>
-            <p>Category: Treasurer</p>
+            <p>Category: {{position_group[3]}}</p>
             <input type="radio" id="male" name="tr" value="male"> <label for="male">Male</label><br>
             <input type="radio" id="female" name="tr" value="female"> <label for="female">Female</label><br>
             <input type="radio" id="other" name="tr" value="other"> <label for="other">Other</label>
         </div>
         <div>
-            <p>Category: Financial Secretary</p>
+            <p>Category: {{position_group[4]}}</p>
             <input type="radio" id="male" name="fs" value="male"> <label for="male">Male</label><br>
             <input type="radio" id="female" name="fs" value="female"> <label for="female">Female</label><br>
             <input type="radio" id="other" name="fs" value="other"> <label for="other">Other</label>
