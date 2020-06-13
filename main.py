@@ -34,36 +34,59 @@ def login():
    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
       email = request.form['email']
       password = request.form['password']
-      #hasher.update(password.encode('utf-8')) 
-      #hashed = hasher.hexdigest()
-
-
+     
       # Check if account exists using MySQL
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM usertab WHERE email = %s AND pass = MD5(%s)', (email,password,))
       # Fetch one record and return result
       account = cursor.fetchone()
-      #msg = hashed
-      
       # If account exists in usertab and the supplied password is correct
-      if account['category'] == 'voter':
+      if account['category'] == 'voter':# if user is a voter
          # Create session data, we can access this data in other routes
          session['loggedin'] = True
          session['id'] = account['userid']
          session['name'] = account['firstname']
-         # Redirect to home page
-         #return 'Logged in successfully!'
-         #return render_template('booth.html', msg='')
          return redirect(url_for('booth'))
+      elif account['category'] == 'admin':# if user is a admin
+         # Create session data, we can access this data in other routes
+         session['loggedin'] = True
+         session['id'] = account['userid']
+         session['name'] = account['firstname']
+         return redirect(url_for('admin'))
          #msg = hashed
+      else:
+         # Account doesn't exist or username/password incorrect
+         msg = 'Incorrect username/password!'
+   #By default (without credentials supply)      
+   return render_template('login.html', msg=msg)
+
+
+########Admin Login Page
+@app.route('/votesys/logexed/', methods=['GET', 'POST'])
+def logexed():
+   # Output message if something goes wrong...
+   msg = ''
+   # Check if "email" and "password" POST requests exist (user submitted form)
+   if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+      email = request.form['email']
+      password = request.form['password']
+      # Check if account exists using MySQL
+      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cursor.execute('SELECT * FROM usertab WHERE email = %s AND pass = MD5(%s)', (email,password,))
+      # Fetch one record and return result
+      account = cursor.fetchone()
+      # If account exists in usertab and the supplied password is correct
+      if account['category'] == 'admin':
+         # Create session data, we can access this data in other routes
+         session['loggedin'] = True
+         session['id'] = account['userid']
+         session['name'] = account['firstname']
+         return redirect(url_for('admin'))
       elif account['category'] == 'admin':
          # Create session data, we can access this data in other routes
          session['loggedin'] = True
          session['id'] = account['userid']
          session['name'] = account['firstname']
-         # Redirect to home page
-         #return 'Logged in successfully!'
-         #return render_template('booth.html', msg='')
          return redirect(url_for('admin'))
          #msg = hashed
       else:
@@ -71,6 +94,7 @@ def login():
          msg = 'Incorrect username/password!'
          
    return render_template('login.html', msg=msg)
+
 
 ########Logout Page
 @app.route('/votesys/logout')
@@ -137,8 +161,6 @@ def regexed():
       phone = request.form['phone']
       email = request.form['email']
       password = request.form['password']
-      #hasher.update(password.encode('utf-8'))
-      #hashed = hasher.hexdigest()
       category = 'admin'
       
       # Check if account exists using MySQL
@@ -161,12 +183,7 @@ def regexed():
       # Form is empty... (no POST data)
       msg = 'Please fill out the form!'
    # Show registration form with message (if any)
-   return render_template('register.html', msg=msg)
-
-
-
-
-
+   return render_template('regexed.html', msg=msg)
 
 
 @app.route('/votesys/booth')
@@ -186,7 +203,8 @@ def booth():
       position = [contenstants_details[i][4] for i in range(len(contenstants_details))] #returns individual positions
       #Search for voter on voters' table and return value to status
       status =''
-      return render_template('booth.html', userid= session['id'], username=session['name'],cont_userid, full_name, position)
+      #return render_template('booth.html', userid= session['id'], username=session['name'],cont_userid, full_name, position)
+      return render_template('booth.html', userid= session['id'], username=session['name'])
    # User is not loggedin redirect to login page
    return redirect(url_for('login'))
 
@@ -206,7 +224,7 @@ def admin():
 
 
 
-@app.route('/pythonlogin/profile')
+@app.route('/votesys/profile')
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -221,45 +239,12 @@ def profile():
 
 
 
-
-
-
-
-
-
-
-@app.route('/')
+@app.route('/votesys/')
 def home():
     return 'Hello INdex'
    #return render_template("index.html")
 
-'''
-@app.route('/login')
-def login():
-   return render_template("login.html")
 
-@app.route('/login_instruct')
-def login_instruct():
-   if request.method == 'POST':
-      if request.form['nm'] == "habbay" and request.form['pd'] == "hab":
-         return redirect(url_for('success',name = user))
-   else:
-      if request.args.get('nm') == "habbay" and request.args.get('pd') == "hab":
-         return redirect(url_for('success',name = user))
-
-@app.route('/hello/<string:name>')
-def hello_name(name):
-   return 'Hello %s!' % name
-   #return f"Hello, {name}!"
-   
-@app.route('/blog/<int:postID>')
-def show_blog(postID):
-   return 'Blog Number %d' % postID
-
-@app.route('/rev/<float:revNo>')
-def revision(revNo):
-   return 'Revision Number %f' % revNo
-'''
 
 if __name__ == '__main__':
    app.run(debug = True)
